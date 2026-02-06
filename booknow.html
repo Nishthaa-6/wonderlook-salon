@@ -49,7 +49,7 @@
     </nav>
 
     <!-- Page Header -->
-    <section class="page-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/book\ appointment.jpg') center/cover; padding: 150px 0 100px; margin-top: 70px;">
+    <section class="page-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/book\ now\ background.jfif') center/cover; padding: 150px 0 100px; margin-top: 70px;">
         <div class="container">
             <div class="text-center text-white" data-aos="fade-up">
                 <h1 class="display-3 fw-bold mb-3">Book Your Appointment</h1>
@@ -73,7 +73,7 @@
                     <div class="booking-benefit p-4">
                         <i class="fas fa-bell fa-3x text-primary mb-3"></i>
                         <h5>Instant Confirmation</h5>
-                        <p class="text-muted mb-0">Get booking confirmation via email/SMS</p>
+                        <p class="text-muted mb-0">Get booking confirmation via WhatsApp</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
@@ -205,7 +205,6 @@
                                     <label class="form-label">Preferred Time *</label>
                                     <select class="form-control" required>
                                         <option value="" selected>Select Time Slot</option>
-                                        <option>9:00 AM - 10:00 AM</option>
                                         <option>10:00 AM - 11:00 AM</option>
                                         <option>11:00 AM - 12:00 PM</option>
                                         <option>12:00 PM - 1:00 PM</option>
@@ -245,7 +244,7 @@
 
                                 <div class="col-12 text-center mt-4">
                                     <button type="submit" class="btn btn-primary-custom btn-lg px-5">
-                                        <i class="fas fa-check-circle me-2"></i>Confirm Booking
+                                        <i class="fab fa-whatsapp me-2"></i>Confirm Booking
                                     </button>
                                 </div>
 
@@ -389,7 +388,7 @@
                             </h2>
                             <div id="booking1" class="accordion-collapse collapse show" data-bs-parent="#bookingAccordion">
                                 <div class="accordion-body">
-                                    Once you submit the booking form, you'll receive a confirmation email and SMS with your appointment details. You can also call us to confirm your booking.
+                                    Once you submit the booking form, you'll be redirected to WhatsApp with your details. Simply send the message and we'll confirm your appointment immediately!
                                 </div>
                             </div>
                         </div>
@@ -458,7 +457,7 @@
                 <i class="fas fa-phone-volume fa-3x mb-3"></i>
                 <h2 class="mb-3">Prefer to Book Over Phone?</h2>
                 <p class="lead mb-4">Call us now and speak with our friendly staff</p>
-                <a href="tel:+917015752437" class="btn btn-light btn-lg px-5">
+                <a href="tel:+917988153054" class="btn btn-light btn-lg px-5">
                     <i class="fas fa-phone me-2"></i>Call +91 7988153054
                 </a>
             </div>
@@ -489,7 +488,7 @@
                             <li><a href="about.html">About</a></li>
                             <li><a href="services.html">Services</a></li>
                             <li><a href="pricing.html">Pricing</a></li>
-                            <li><a href="booking.html">Book Now</a></li>
+                            <li><a href="booknow.html">Book Now</a></li>
                         </ul>
                     </div>
                 </div>
@@ -538,15 +537,60 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Form submission handler
+        // Form submission handler - Send to WhatsApp
         document.getElementById('appointmentForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Show success message (you can customize this)
-            alert('Thank you for booking with WonderLooks! We will confirm your appointment shortly via email and SMS.');
+            // Get form values
+            const name = document.querySelector('input[placeholder="Enter your full name"]').value;
+            const email = document.querySelector('input[placeholder="your.email@example.com"]').value;
+            const phone = document.querySelector('input[placeholder="+91 XXXXX XXXXX"]').value;
+            const gender = document.querySelector('select[required]').value;
+            const serviceCategory = document.getElementById('serviceCategory').value;
+            const specificService = document.querySelectorAll('select[required]')[2].value;
+            const stylist = document.querySelectorAll('select')[3].value;
+            const budget = document.querySelectorAll('select')[4].value;
+            const date = document.querySelector('input[type="date"]').value;
+            const time = document.querySelectorAll('select[required]')[3].value;
+            const notes = document.querySelector('textarea').value;
             
-            // Reset form
-            this.reset();
+            // Create WhatsApp message
+            let message = `*🎀 NEW APPOINTMENT BOOKING 🎀*\n\n`;
+            message += `*Personal Details:*\n`;
+            message += `👤 Name: ${name}\n`;
+            message += `📧 Email: ${email}\n`;
+            message += `📱 Phone: ${phone}\n`;
+            message += `⚧ Gender: ${gender}\n\n`;
+            message += `*Service Details:*\n`;
+            message += `📋 Category: ${serviceCategory}\n`;
+            message += `✂️ Service: ${specificService}\n`;
+            message += `👨‍🎨 Stylist: ${stylist}\n`;
+            message += `💰 Budget: ${budget}\n\n`;
+            message += `*Schedule:*\n`;
+            message += `📅 Date: ${date}\n`;
+            message += `🕐 Time: ${time}\n`;
+            if(notes) {
+                message += `\n*Additional Notes:*\n${notes}\n`;
+            }
+            message += `\n_Please confirm my appointment. Thank you!_ ✨`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Your WhatsApp number (with country code, no + or spaces)
+            const whatsappNumber = '917988153054';
+            
+            // Create WhatsApp URL
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Open WhatsApp in new tab
+            window.open(whatsappURL, '_blank');
+            
+            // Show success message
+            alert('Redirecting to WhatsApp... Please send the message to confirm your booking!');
+            
+            // Optional: Reset form after sending
+            // this.reset();
         });
 
         // Set minimum date to today
